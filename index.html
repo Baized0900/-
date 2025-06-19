@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>চৈতি ফল ভান্ডার</title>
+  <style>
+    body {
+      font-family: 'Siyam Rupali', sans-serif;
+      background-color: #f0fdf4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #065f46;
+    }
+    .memo {
+      margin-top: 20px;
+      border: 1px dashed #999;
+      padding: 15px;
+      background-color: #fefce8;
+    }
+    .memo-header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .memo-body p {
+      margin: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>চৈতি ফল ভান্ডার - হিসাব এন্ট্রি</h2>
+    <form id="entryForm">
+      <label>ইউজারের নাম:</label>
+      <input type="text" id="username" required />
+
+      <label>প্রাপক (যার কাছে যাবে):</label>
+      <input type="text" id="receiver" required />
+
+      <label>লোকেশন (যেখানে নামবে):</label>
+      <input type="text" id="location" required />
+
+      <label>মাল সংখ্যা (কতটি):</label>
+      <input type="number" id="itemCount" value="1" required />
+
+      <label>প্রতি মাল অতিরিক্ত ভাড়া (৯০ টাকার উপরে যদি থাকে):</label>
+      <input type="number" id="extraFare" value="0" />
+
+      <label>ভ্যান ভাড়া (যদি থাকে):</label>
+      <input type="number" id="vanFare" value="0" />
+
+      <label>ঢাকা খরচ (শুধু অফিসের খরচ):</label>
+      <input type="number" id="dhakaCost" value="0" />
+
+      <button type="button" onclick="calculateTotal()">মেমো তৈরি করুন</button>
+    </form>
+
+    <div id="result" class="memo"></div>
+  </div>
+
+  <script>
+    function calculateTotal() {
+      const username = document.getElementById('username').value;
+      const receiver = document.getElementById('receiver').value;
+      const location = document.getElementById('location').value;
+      const itemCount = parseInt(document.getElementById('itemCount').value);
+      const baseFare = 90;
+      const extraFare = parseFloat(document.getElementById('extraFare').value);
+      const vanFare = parseFloat(document.getElementById('vanFare').value);
+      const dhakaCost = parseFloat(document.getElementById('dhakaCost').value);
+      const totalFarePerItem = baseFare + extraFare;
+      const totalFare = totalFarePerItem * itemCount;
+      const total = totalFare + vanFare + dhakaCost;
+      const date = new Date().toLocaleDateString('bn-BD');
+
+      document.getElementById('result').innerHTML = `
+        <div class="memo-header">
+          <h3>চৈতি ফল ভান্ডার</h3>
+          <p>তারিখ: ${date}</p>
+        </div>
+        <div class="memo-body">
+          <p><strong>ইউজার:</strong> ${username}</p>
+          <p><strong>প্রাপক:</strong> ${receiver}</p>
+          <p><strong>লোকেশন:</strong> ${location}</p>
+          <p><strong>মাল সংখ্যা:</strong> ${itemCount}</p>
+          <p><strong>প্রতি মাল ভাড়া:</strong> ৯০ টাকা</p>
+          <p><strong>প্রতি মাল অতিরিক্ত ভাড়া:</strong> ${extraFare} টাকা</p>
+          <p><strong>মোট মাল ভাড়া:</strong> (${baseFare} + ${extraFare}) × ${itemCount} = <strong>${totalFare} টাকা</strong></p>
+          <p><strong>ভ্যান ভাড়া:</strong> ${vanFare} টাকা</p>
+          <p><strong>ঢাকা অফিস খরচ:</strong> ${dhakaCost} টাকা</p>
+          <hr>
+          <p><strong>সর্বমোট:</strong> <strong>${total} টাকা</strong></p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
